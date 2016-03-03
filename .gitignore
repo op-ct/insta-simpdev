@@ -1,0 +1,4 @@
+*.sw[pnmolrstuvq]
+/simp-core
+/src
+Gemfile.lock
