@@ -43,13 +43,12 @@ Vagrant.configure(2) do |config|
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
   #
-  # config.vm.provider "virtualbox" do |vb|
-  #   # Display the VirtualBox GUI when booting the machine
-  #   vb.gui = true
-  #
-  #   # Customize the amount of memory on the VM:
-  #   vb.memory = "1024"
-  # end
+  config.vm.provider "virtualbox" do |vb|
+    # Display the VirtualBox GUI when booting the machine
+    # vb.gui = false
+    vb.cpus = 4
+    vb.memory = "1024"
+  end
   #
   # View the documentation for the provider you are using for more
   # information on available options.
@@ -69,7 +68,14 @@ Vagrant.configure(2) do |config|
     cd ~vagrant
     sudo -u vagrant gpg2 --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
     sudo -u vagrant \\curl -sSL https://get.rvm.io > ~vagrant/get-rvm.bash
-    sudo -u vagrant bash ~vagrant/get-rvm.bash stable --ruby=2.0.0 --with-default-gems="bundler pry"
-    sudo -u vagrant ~vagrant/.rvm/bin/rvm all do gem install bundler pry
+    sudo -u vagrant bash ~vagrant/get-rvm.bash stable --ruby=2.0.0 --with-default-gems="bundler pry pry-doc simp-rake-helpers simp-build-helpers puppet beaker rspec-puppet nokogiri librarian-puppet-pr328 puppet_forge ruby-progressbar hiera yard CFPropertyList i18n thread_safe dotenv"
+    sudo -u vagrant ~vagrant/.rvm/bin/rvm all do gem install bundler
+  
+    # Additional installations (optional)
+    # --------------------------------------------------------------------------
+    sudo yum install -y epel-release
+    sudo yum install -y haveged
+    sudo systemctl enable haveged
+    sudo systemctl start haveged
   SHELL
 end
