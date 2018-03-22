@@ -17,7 +17,9 @@ Vagrant.configure('2') do |config|
 
 
   config.vm.provision 'shell', inline: <<-SHELL
-    yum install --enablerepo=extras -y docker vim-enhanced git libicu-devel rpm-build
+    yum install --enablerepo=extras -y docker vim-enhanced git libicu-devel \
+      rpm-build epel-release
+    yum install --enablerepo=epel -y aria2 elinks
     # You can also append `-G vagrant` to `OPTIONS=` in /etc/sysconfig/docker
     cat <<DOCKAH > /etc/docker/daemon.json
 {
@@ -25,6 +27,10 @@ Vagrant.configure('2') do |config|
   "group": "vagrant"
 }
 DOCKAH
+    # man docker-storage-setup
+    # https://bugzilla.redhat.com/show_bug.cgi?id=1316210
+    echo 'EXTRA_STORAGE_OPTIONS="--storage-opt dm.basesize=100G"' >> /etc/sysconfig/docker-storage-setup
+    container-storage-setup
     systemctl start docker
     systemctl enable docker
     chown -R vagrant /vagrant # TODO: why is this needed?
@@ -51,6 +57,24 @@ DOCKAH
     gem install bundler --no-ri --no-rdoc
     cd /vagrant
     [[ -f Gemfile ]] && bundle
+
+    mkdir -p .aria2
+    cat <<ARIA > .aria2/aria2.conf
+continue
+dir=/vagrant
+file-allocation=none
+input-file=/vagrant/.aria2/input.conf
+log-level=warn
+max-connection-per-server=4
+min-split-size=5M
+on-download-complete=exit
+server-stat-of=/vagrant/.aria2/server-stat-of
+server-stat-if=/vagrant/.aria2/server-stat-of
+uri-selector=feedback
+ARIA
+
+bash get_iso.sh centos7 centos6
+
 ###    #{bash_env_string} bundle exec rake beaker:suites[rpm_docker]
   SHELL
 end

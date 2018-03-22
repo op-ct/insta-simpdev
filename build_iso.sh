@@ -1,6 +1,8 @@
 #!/bin/bash
 
 
+[ $# -lt 1 ] && printf "ERROR: no arguments\n\nUsage:\n\t$0 /path/to/CENTOS_ISO_FILE]\n\n" && exit 2
+
 [ "${CENTOS_ISO_FILE:-x}" == 'x' ] && echo "Error: need to set \$CENTOS_ISO_FILE" && exit 2
 
 
@@ -16,9 +18,8 @@ mkdir -p ISO
 
 rsync -avz --progress ${CENTOS_ISO_FILE} ISO/
 
-
 export SIMP_BUILD_docs=${SIMP_BUILD_docs:-no}
 export SIMP_ENV_NO_SELINUX_DEPS=${SIMP_ENV_NO_SELINUX_DEPS:-no}
 export BEAKER_destroy=${BEAKER_destroy:-onpass}
 
-rake beaker:suites[rpm_docker]
+time bundle exec rake beaker:suites[rpm_docker]
