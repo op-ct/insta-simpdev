@@ -15,7 +15,7 @@
 
 ## Description
 
-The Vagrantfile in this repository will provision a CentoS 7 Virtualbox VM that can build SIMP ISOs using the rpm_docker suite. 
+The Vagrantfile in this repository will provision a CentoS 7 Virtualbox VM that can build SIMP ISOs using the rpm_docker suite.
 
 
 ## Usage
@@ -23,7 +23,7 @@ The Vagrantfile in this repository will provision a CentoS 7 Virtualbox VM that 
 Use cases this project was created for:
 
 - A template for CI runners
-- A simple provision-and-build `vagrant up` 
+- A simple provision-and-build `vagrant up`
 - A single-build for users who don't have access to a stable docker or Linux environment
 
 ### Provisioning the VM
@@ -48,4 +48,13 @@ Some environment variables are passed through to the VM guest OS, if they match 
 
 ### Getting the ISOs once they're built
 
+```bash
+vagrant port
+
+# The forwarded ports for the machine are listed below. Please note that
+# these values may differ from values configured in the Vagrantfile if the
+# provider supports automatic port collision detection and resolution.
+#
+#     22 (guest) => 2201 (host)
+```
 
