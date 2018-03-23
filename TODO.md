@@ -2,9 +2,14 @@
 ## locations
 
 - [ ] where to find ISOs
-  - [ ] default
-  - [ ] ENV var
-- [ ] where to get ISOs
+  - [x] default
+  - [x] ENV vars
+    - CENTOS_7_ISO_URL=http://isoredirect.centos.org/centos/7/isos/x86_64/
+    - CENTOS_6_ISO_URL
+    - CENTOS_7_DVD=CentOS-7-x86_64-DVD-1708.iso
+    - CENTOS_6_DVD1
+    - CENTOS_6_DVD2
+- [ ] where to get OLD ISOs
   - [ ] default
   - [ ] env var
 - [ ] How do we receive refs?
