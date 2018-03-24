@@ -1,0 +1,42 @@
+# Changelog
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
+and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
+
+## [1.0.0-pre1] - 2018-03-24
+Rewrote everything to use documented SIMP build process and template CI runners
+
+### Added
+- docker
+- `scripts/` directory
+- README, CHANGELOG, LICENSE
+- environment variables:
+  - modify vagrant provisioning
+  - pass-through support for build-relevant environment variables
+- rudimentary ISO-downloading (using aria2c for speed)
+
+### Changed
+- Vagrantfile completely re-written for SIMP 6.X
+  - Uses rake beaker:suites[rpm_docker] build method
+
+
+## [0.2.0] - 2016-03-03
+(SIMP-862) Ready vbox for CI perfomance test
+
+### Added
+- `.gitignore`
+- haveged (helps the VM keep enough entropy for the many crypto-related tasks)
+
+### Changed
+- `/ISO` synced folder
+- RVM Ruby version is now 1.9.3
+
+### Removed
+- `/vagrant`
+
+## [0.1.0] - 2015-11-19
+Made a Vagrantfile to help folks build SIMP ISOs on their MacBooks
+
+### Added
+- `Vagrantfile`

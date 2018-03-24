@@ -1,0 +1,10 @@
+*.sw[pnmolrstuvq]
+/simp-core
+/src
+Gemfile.lock
+/puppetfiles
+/downloads
+/.vagrant-ssh-config
+/.aria2
+*.iso
+x.*
