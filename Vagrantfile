@@ -23,7 +23,7 @@ Vagrant.configure('2') do |config|
   end
 
 
-  config.vm.provision 'shell', inline: 'bash /vagrant/root/provision.sh'
+  config.vm.provision 'shell', inline: 'bash /vagrant/scripts/root/provision.sh'
 
   # pass on certain environment variables from the `vagrant CMD` cli to the
   # tasks running in the VM
@@ -44,7 +44,7 @@ Vagrant.configure('2') do |config|
     # download ISOs if they are not already present
     # -------
     # NOTE: speed things up
-    #{bash_env_string} bash scripts/vagrant/get_isos.sh centos7 centos6
+    {bash_env_string} bash scripts/vagrant/get_isos.sh centos7 centos6
 
     # Build simp from those ISOs
     #{bash_env_string} bash scripts/vagrant/build_iso.sh downloads/isos/*.iso
