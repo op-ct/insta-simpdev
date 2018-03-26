@@ -3,14 +3,18 @@
 <!-- vim-markdown-toc GFM -->
 
 * [Description](#description)
-* [Requirements](#requirements)
+* [Setup](#setup)
+  * [Requirements](#requirements)
 * [Usage](#usage)
   * [Provisioning the VM](#provisioning-the-vm)
-  * [Customizing the provisioning process](#customizing-the-provisioning-process)
-    * [ENV variables](#env-variables)
-* [Getting the SIMP ISOs after they've been built](#getting-the-simp-isos-after-theyve-been-built)
-  * [Using `scp`](#using-scp)
-  * [Using `vagrant-rsync-back`](#using-vagrant-rsync-back)
+  * [Building the ISO](#building-the-iso)
+  * [Getting ISOs out of the VM](#getting-isos-out-of-the-vm)
+    * [Using `scp`](#using-scp)
+    * [Using `vagrant-rsync-back`](#using-vagrant-rsync-back)
+* [Reference](#reference)
+  * [ENV variables](#env-variables)
+    * [Provisioning variables](#provisioning-variables)
+    * [Build process variables](#build-process-variables)
 
 <!-- vim-markdown-toc -->
 
@@ -27,10 +31,13 @@ The are several use cases this project addresses.  You can use it to:
 - inject speculative/customized `Puppetfile.*` files into the SIMP ISO build
   (useful for regression-testing)
 
-## Requirements
 
-- Vagrant
-- VirtualBox
+## Setup
+
+### Requirements
+
+- [Vagrant][vagrant]
+- [VirtualBox][virtualbox]
 
 ## Usage
 
@@ -38,32 +45,22 @@ The are several use cases this project addresses.  You can use it to:
 
     vagrant up
 
-### Customizing the provisioning process
+### Building the ISO
 
-#### ENV variables
-
-Environment variables can be used to customize the provisioning process:
-
-- **`VAGRANT_VM_CPUS`** The number of CPUs available to the VM (default: 8)
-- **`VAGRANT_VBOX_NAME`** An alternate name for the local vagrant VM (default: `simp_builder`)
-
-Some environment variables are passed through to the VM guest OS, if they match the following patterns:
-
-- `SIMP_*`
-- `BEAKER_*`
-- `*NO_SELINUX_DEPS*`
+By default, `vagrant up` will attempt to download and build the SIMP ISO as
+part of the provisioning process.
 
 
-## Getting the SIMP ISOs after they've been built
+### Getting ISOs out of the VM
 
-### Using `scp`
+#### Using `scp`
 
 ```bash
 vagrant ssh-config > .vagrant-ssh-config
 scp -F .vagrant-ssh-config simp_builder:/vagrant/simp-core/build/distributions/*/*/*/SIMP_ISO/*.iso ./
 ```
 
-### Using `vagrant-rsync-back`
+#### Using `vagrant-rsync-back`
 
 ```bash
 # Ensure the plugin is installed
@@ -74,4 +71,52 @@ vagrant rsync-back
 
 ```
 
+
+## Reference
+
+### ENV variables
+
+Many environment variables have been exposed for the benefit of power-users and
+CI tooling:
+
+#### Provisioning variables
+
+These variables customize affect the `vagrant up` and provisioning process:
+
+- **`VAGRANT_VBOX_NAME`** An alternate name for the local vagrant VM (default: `simp_builder`)
+- **`VAGRANT_VM_CPUS`** The number of CPUs available to the VM (default: 8)
+
+#### Build process variables
+
+These variables affect the build scripts under `scripts/vagrant/`.  They are
+effective during provisioning and when the scripts are run within the guest OS.
+
+- **`SIMP_BUILDER_install_rvm`** (default: `yes`) if default or set to `yes`, installs RVM for the
+  `vagrant` user
+- **`SIMP_BUILDER_download_iso`** Unless set to `no`, the VM will attempt to
+  download simp ISOs to `downloads/isos/` after provisioning (default: `yes`).
+- **`SIMP_BUILDER_build_iso`** Unless set to `no`, the VM will attempt to
+  build the SIMP ISO using the isos in the directory `downloads/isos/`
+  (default: `yes`)
+
+When **`SIMP_BUILDER_build_iso`** is `yes`:
+
+- **`SIMP_BUILDER_core_repo`** (default: https://github.com/simp/simp-core.git)
+- **`SIMP_BUILDER_core_ref`** (default: `master`)
+
+When **`SIMP_BUILDER_build_iso`** is `yes`:
+
+- **`SIMP_BUILDER_core_repo`** (default: https://github.com/simp/simp-core.git)
+- **`SIMP_BUILDER_core_ref`** (default: `master`)
+
+Environment variables are passed through to the VM guest OS if they match
+the following patterns:
+
+- `SIMP_*`
+- `BEAKER_*`
+- `*NO_SELINUX_DEPS*`
+
+
+[vagrant]: https://www.vagrantup.com/downloads.html
+[virtualbox]: https://www.virtualbox.org/wiki/Downloads
 [vagrant-rsync-back]: https://github.com/smerrill/vagrant-rsync-back

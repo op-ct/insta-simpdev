@@ -8,21 +8,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 Rewrote everything to use documented SIMP build process and template CI runners
 
 ### Added
-- docker
+- ISO is downloaded and built automatically (by default)
+  - Uses rake beaker:suites[rpm_docker] build method
 - `scripts/` directory
 - README, CHANGELOG, LICENSE
 - environment variables:
   - modify vagrant provisioning
   - pass-through support for build-relevant environment variables
 - rudimentary ISO-downloading (using aria2c for speed)
+- Installs docker
 
 ### Changed
-- Vagrantfile completely re-written for SIMP 6.X
-  - Uses rake beaker:suites[rpm_docker] build method
 
+- Complete re-write for SIMP 6.X
 
 ## [0.2.0] - 2016-03-03
-(SIMP-862) Ready vbox for CI perfomance test
+(SIMP-862) Build a vbox for CI perfomance tests
 
 ### Added
 - `.gitignore`
@@ -36,7 +37,7 @@ Rewrote everything to use documented SIMP build process and template CI runners
 - `/vagrant`
 
 ## [0.1.0] - 2015-11-19
-Made a Vagrantfile to help folks build SIMP ISOs on their MacBooks
+Made a Vagrantfile to help docs folks build SIMP ISOs on their MacBooks
 
 ### Added
 - `Vagrantfile`

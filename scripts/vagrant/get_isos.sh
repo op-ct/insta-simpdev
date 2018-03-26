@@ -12,6 +12,8 @@
 
 [ $# -lt 1 ] && printf "ERROR: no arguments\n\nUsage:\n\t$0 [centos6|centos7]\n\n" && exit 2
 
+[ "${SIMP_BUILDER_download_iso:-yes}" == yes ] || { echo "== skipping ${0}: SIMP_BUILDER_download_iso='${SIMP_BUILDER_download_iso}' (instead of 'yes')"; }
+
 TARGETS=( "${@}" )
 ARIA2_CONF="${PWD}/.aria2/aria2.conf"
 DOWNLOADS_DIR=downloads

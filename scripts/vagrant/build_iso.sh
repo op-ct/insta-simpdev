@@ -1,11 +1,8 @@
 #!/bin/bash
 #
-# Usage
-#
-# environment variables:
-#
-#   $SIMP_CORE_REPO   https://github.com/simp/simp-core.git
-#   $SIMP_CORE_REF    master
+# 
+
+[ "${SIMP_BUILDER_build_iso:-yes}" == yes ] || { echo "== skipping ${0}: SIMP_BUILDER_build_iso='${SIMP_BUILDER_build_iso}' (instead of 'yes')"; }
 
 [ $# -lt 1 ] && printf "ERROR: no arguments\n\nUsage:\n\t$0 /path/to/CENTOS_ISO_FILE [...]\n\n" && exit 2
 
@@ -16,7 +13,7 @@ done
 
 if [ ! -d simp-core ]; then
   # fetch `simp-core` repo @ ref
-  git clone --depth 1 "${SIMP_CORE_REPO:-https://github.com/simp/simp-core.git}" -b "${SIMP_CORE_REF:-master}" simp-core
+  git clone --depth 1 "${SIMP_BUILDER_core_repo:-https://github.com/simp/simp-core.git}" -b "${SIMP_BUILDER_core_ref:-master}" simp-core
 fi
 
 # Naive Puppetfile munge
