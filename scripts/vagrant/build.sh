@@ -2,6 +2,10 @@
 
 custom_scripts_dir=${SIMP_BUILDER_custom_scripts_dir:-/vagrant/scripts/custom}
 vagrant_scripts_dir=${SIMP_BUILDER_vagrant_scripts_dir:-/vagrant/scripts/vagrant}
+script_log_dir=${SIMP_BUILDER_log_dir:-/vagrant/logs/session_$$}
+tasks=(setup build)
+custom_users=(root vagrant)
+
 
 # Return all files that match
 #
@@ -24,7 +28,7 @@ sanitize_to_env_var_name()
   echo "${_env_var}"
 }
 
-# If a given env var is 'no', then `continue` (skip) to the next iteration
+# `continue` (skip) to the next iteration if a given env var's value is 'no'
 #
 # $1 = name of environment variable
 # $2 = (optional) name of section
@@ -33,7 +37,7 @@ skip_if_env_var_is_no()
   local section=${2:-section}
   local env_var; { read env_var; } < <(sanitize_to_env_var_name "${1}")
   if [ "${!env_var}" == 'no' ]; then
-    echo "!!!! WARNING: SKIPPED ${section}: env var ${env_var}=no"; continue
+    echo "!!!! WARNING: SKIPPING ${section} because ${env_var}=no"; continue
     continue
   else
     [[ ${DEBUG} -gt 1 ]] && echo "    --  OK  ${section}: $env_var='${!env_var}' (proceeding)" 1>&2
@@ -41,12 +45,15 @@ skip_if_env_var_is_no()
 }
 
 
+# $1 = full path to executable
 run_script()
 {
   [ $# -lt 1 ] && { printf "ERROR: '$0':\n\nusage:\n\t$0 FILE\n\n" && exit 3; }
   printf "\n== SIMP_BUILDER: executing '$1':\n\n"
-  [[ $(basename $(dirname $1)) =~ ^root. ]] && sudo="sudo -E" || sudo=
-  ${sudo} $1  # TODO: logging
+  local script_dir=$(basename $(dirname $1))
+  [[ "${script_dir}" =~ ^root. ]] && sudo="sudo -E" || sudo=
+  mkdir -p "${script_log_dir}/${script_dir}"
+  ${sudo} $1 |& tee "${script_log_dir}/${script_dir}/$(basename $1)"
 }
 
 
@@ -63,7 +70,7 @@ run_stage()
   for user in root vagrant; do
     skip_if_env_var_is_no "SIMP_BUILDER__user_${user}" user
     skip_if_env_var_is_no "SIMP_BUILDER__stage_${stage}__user_${user}"
-
+    export SIMP_BUILDER_user="${user}"
     stage_user_scripts_dir="${_scripts_dir}/${user}.${stage}.d"
     n=0
 
@@ -83,17 +90,17 @@ run_stage()
   done
 }
 
-tasks=(setup build)
-custom_users=(root vagrant)
-
 for task in "${tasks[@]}"; do
   printf "\n\n========================================\n"
   printf     "             TASK: ${task}\n"
   printf     "========================================\n\n"
   skip_if_env_var_is_no "SIMP_BUILDER__task_${task}" task
+
+  export SIMP_BUILDER_task="${task}"
   run_stage "pre-${task}"  custom_users[@]
   run_stage "${task}"      vagrant "${vagrant_scripts_dir}"
   run_stage "post-${task}" custom_users[@]
+  unset SIMP_BUILDER_task
 done
 
 echo 'done'

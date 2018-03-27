@@ -2,19 +2,16 @@
 
 <!-- vim-markdown-toc GFM -->
 
-* [Description](#description)
-* [Setup](#setup)
-  * [Requirements](#requirements)
-* [Usage](#usage)
-  * [Provisioning the VM](#provisioning-the-vm)
-  * [Building the ISO](#building-the-iso)
-  * [Getting ISOs out of the VM](#getting-isos-out-of-the-vm)
-    * [Using `scp`](#using-scp)
-    * [Using `vagrant-rsync-back`](#using-vagrant-rsync-back)
-* [Reference](#reference)
-  * [ENV variables](#env-variables)
-    * [Provisioning variables](#provisioning-variables)
-    * [Build process variables](#build-process-variables)
+  * [Description](#description)
+  * [Setup](#setup)
+    * [Requirements](#requirements)
+  * [Usage](#usage)
+    * [Provisioning the VM](#provisioning-the-vm)
+    * [Building the ISO](#building-the-iso)
+    * [Getting ISOs out of the VM](#getting-isos-out-of-the-vm)
+      * [Using `scp`](#using-scp)
+* [Ensure the plugin is installed](#ensure-the-plugin-is-installed)
+* [Rsync ALL the contents of /vagrant back to the host machine (this may take a while)](#rsync-all-the-contents-of-vagrant-back-to-the-host-machine-this-may-take-a-while)
 
 <!-- vim-markdown-toc -->
 
@@ -56,9 +53,20 @@ part of the provisioning process.
 #### Using `scp`
 
 ```bash
+# Dump ssh-config for VM
 vagrant ssh-config > .vagrant-ssh-config
-scp -F .vagrant-ssh-config simp_builder:/vagrant/simp-core/build/distributions/*/*/*/SIMP_ISO/*.iso ./
+
+# Retrieve *.iso files
+scp -F .vagrant-ssh-config 
+  simp_builder:/vagrant/simp-core/build/distributions/*/*/*/SIMP_ISO/*.iso ./
 ```
+
+To retrieve the *.iso and *.tar.gz files
+scp -F .vagrant-ssh-config \
+  simp_builder:/vagrant/simp-core/build/distributions/*/*/*/{SIMP_ISO/*.iso,DVD_Overlay/*.tar.gz} ./
+```
+
+To retriev
 
 #### Using `vagrant-rsync-back`
 
@@ -116,6 +124,22 @@ the following patterns:
 - `BEAKER_*`
 - `*NO_SELINUX_DEPS*`
 
+#### Scripts
+
+```
+scripts/
+├── root/
+│   ├── provision.sh
+│   ├── pre-build.d/      # <-- place custom scripts here
+│   └── post-build.d/     # <-- place custom scripts here
+└── vagrant/              # scripts for the `vagrant user`
+    ├── install_rvm.sh    # installs RVM
+    ├── setup_aria2c.sh   # configures aria2c (for quickly downloading ISOs)
+    ├── pre-build.d/      # <-- place custom scripts here
+    ├── build_iso.sh
+    ├── get_isos.sh
+    └── post-build.d/     # <-- place custom scripts here
+```
 
 [vagrant]: https://www.vagrantup.com/downloads.html
 [virtualbox]: https://www.virtualbox.org/wiki/Downloads
