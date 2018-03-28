@@ -10,7 +10,7 @@
 # retired to http://vault.centos.org, particularly since the vault mirrors
 # don't always host them
 
-if [ "${SIMP_BUILDER__task}" == setup ]; then
+if [ "${SIMP_BUILDER_task}" == setup ]; then
   TARGETS=(centos7 centos6)
 elif [ $# -lt 1 ]; then
   printf "ERROR: no arguments\n\nUsage:\n\t$0 [centos6|centos7]\n\n"
@@ -19,8 +19,9 @@ else
   TARGETS=( "${@}" )
 fi
 
+me=$(basename $0)
 if [ "${SIMP_BUILDER_download_iso:-yes}" != yes ]; then
-  echo "== skipping ${0}: SIMP_BUILDER_download_iso='${SIMP_BUILDER_download_iso}' (instead of 'yes')"
+  echo "  [${me}]: -- skipping: SIMP_BUILDER_download_iso='${SIMP_BUILDER_download_iso}' (instead of 'yes')"
   exit 2
 fi
 
@@ -54,7 +55,7 @@ for os in "${TARGETS[@]}"; do
 
   for iso in "${isos[@]}"; do
     date
-    echo "== Processing ISO '${iso}':"
+    echo "  [${me}]: -- Processing ISO '${iso}':"
     tmp_file=$(mktemp -t get_isos.sh.XXXXXXXXXX) || { echo "ERROR: failed to mktemp file"; exit 3; }
     links "${url}" -dump | grep x86_64 | awk '{print $2}' > ${DOWNLOADS_DIR}/servers.${os}
     sed -e "s@/\$@/${iso}@" ${DOWNLOADS_DIR}/servers.${os}  > ${DOWNLOADS_DIR}/servers.${os}.${iso}.urls

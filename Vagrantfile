@@ -35,17 +35,10 @@ Vagrant.configure('2') do |config|
 
   config.vm.provision 'shell', privileged: false, inline: <<-SHELL
     cd /vagrant
-    source scripts/vagrant/install_rvm.sh
-    source scripts/vagrant/setup_aria2c.sh
-
+    source scripts/vagrant/provision/install_rvm.sh
+    source scripts/vagrant/provision/setup_aria2c.sh
     cd /vagrant
 
-    # download ISOs if they are not already present
-    # -------
-    # NOTE: speed things up
-    #{bash_env_string} bash scripts/vagrant/get_isos.sh centos7 centos6
-
-    # Build simp from those ISOs
-    #{bash_env_string} bash scripts/vagrant/build_iso.sh downloads/isos/*.iso
+    DEBUG=1 #{bash_env_string} bash scripts/vagrant/build.sh
   SHELL
 end
