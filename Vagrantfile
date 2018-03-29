@@ -29,16 +29,15 @@ Vagrant.configure('2') do |config|
   bash_env_string = (
     ENV
      .to_h
-     .select{ |k,v| k =~ /^SIMP_.*|^BEAKER_.*|NO_SELINUX_DEPS/ }
+     .select{ |k,v| k =~ /^SIMP_|^BEAKER_|^PUPPET_|^FACTER_|NO_SELINUX_DEPS|^DEBUG|^VERBOSE/ }
      .map{|k,v| "#{k}=#{v}"}.join(' ')
   )
 
   config.vm.provision 'shell', privileged: false, inline: <<-SHELL
     cd /vagrant
-    source scripts/vagrant/provision/install_rvm.sh
-    source scripts/vagrant/provision/setup_aria2c.sh
+    #{bash_env_string} SIMP_BUILDER_tasks=provision source scripts/vagrant/run_tasks.sh
     cd /vagrant
 
-    DEBUG=1 #{bash_env_string} bash scripts/vagrant/build.sh
+    #{bash_env_string} bash scripts/vagrant/run_tasks.sh
   SHELL
 end

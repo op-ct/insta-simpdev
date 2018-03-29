@@ -1,20 +1,22 @@
 #!/bin/bash
 
-custom_scripts_dir=${SIMP_BUILDER_custom_scripts_dir:-/vagrant/scripts/custom}
-scripts_dir=${SIMP_BUILDER_scripts_dir:-/vagrant/scripts/vagrant}
+scripts_dir=${SIMP_BUILDER_scripts_dir:-/vagrant/scripts}
+custom_scripts_dir=${SIMP_BUILDER_custom_scripts_dir:-$scripts_dir/custom}
 script_log_dir=${SIMP_BUILDER_log_dir:-$scripts_dir/../logs/session_$$}
-tasks=(setup build)
-custom_users=(root vagrant)
 dry_run_mode=${SIMP_BUILDER_dry_run:-no}
 
+IFS=',' read -r -a tasks <<< "${SIMP_BUILDER_tasks:-setup,build}"
+IFS=',' read -r -a custom_users <<< "${SIMP_BUILDER_users:-root,vagrant}"
+stage_users=(vagrant)
 
-# Return all files that match
+# Return all executable files that match \d\d_.*
 #
 # Examples:
 #
 #   00_do_a_thing.sh    # will execute first
 #   01_do_next_thing.sh # will execute second
-#   02_dont.sh.disables # will not execute
+#   02_dont.sh.disabled # won't execute
+#   no_number.sh        # won't execute
 #
 find_scripts_in()
 {
@@ -77,7 +79,9 @@ run_stage()
   _scripts_dir=${3:-${custom_scripts_dir}}
   skip_if_env_var_is_no "SIMP_BUILDER__stage_${stage}" stage
 
-  for user in root vagrant; do
+  [[ "${DEBUG}" -gt 0 ]] && echo "    |--  run_stage(): stage: ${stage}, users ("${#users[@]}"): ${users[@]}"
+
+  for user in ${users[@]}; do
     skip_if_env_var_is_no "SIMP_BUILDER__stage_${stage}__user_${user}" stage
     skip_if_env_var_is_no "SIMP_BUILDER__user_${user}" user
 
@@ -86,12 +90,13 @@ run_stage()
     local n=0
 
     if [ -d "${stage_user_scripts_dir}" ]; then
-      [[ "${DEBUG}" -gt 0 ]] && echo "  ==+==  STAGE $stage   USER $user"
+      [[ "${DEBUG}" -gt 0 ]] && echo "  --+--  STAGE $stage   USER $user"
     else
-      [[ "${DEBUG}" -gt 0 ]] && echo "    |!!  WARNING: skipping non-existent directory '${stage_user_scripts_dir}'"
+      [[ "${DEBUG}" -gt 0 ]] && echo "    |!!  run_stage(): skipping non-existent directory '${stage_user_scripts_dir}'"
       continue
     fi
 
+    # Execute each script in order
     find_scripts_in "${stage_user_scripts_dir}" | sort -z | while read -d $'\0' file; do
       file_name=$(basename "${file}")
       skip_if_env_var_is_no "SIMP_BUILDER__script_${file_name}" script
@@ -133,14 +138,14 @@ shift $((OPTIND -1))
 
 
 for task in "${tasks[@]}"; do
-  printf "\n\n========================================\n"
-  printf     "             TASK: ${task}\n"
-  printf     "========================================\n\n"
+  printf "\n\n    ==+======================================\n"
+  printf     "               TASK: ${task}\n"
+  printf     "    ==+======================================\n\n"
   skip_if_env_var_is_no "SIMP_BUILDER__task_${task}" task
 
   export SIMP_BUILDER_task="${task}"
   run_stage "pre-${task}"  custom_users[@]
-  run_stage "${task}"      vagrant "${scripts_dir}"
+  run_stage "${task}"      stage_users[@] "${scripts_dir}"
   run_stage "post-${task}" custom_users[@]
   unset SIMP_BUILDER_task
 done

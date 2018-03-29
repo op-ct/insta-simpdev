@@ -1,7 +1,7 @@
 
 ## locations
 
-- [ ] where to find ISOs
+- [x] where to find ISOs
   - [x] default
   - [x] ENV vars
     - CENTOS_7_ISO_URL=http://isoredirect.centos.org/centos/7/isos/x86_64/
@@ -12,7 +12,7 @@
 - [ ] where to get OLD ISOs
   - [ ] default
   - [ ] env var
-- [ ] How do we receive refs?
+- [x] How do we receive refs? (A: ENV vars)
 
 
 
@@ -29,22 +29,24 @@
 -->
 
 - build ISO
-  - [ ] fetch `simp-core` repo @ ref
-  - __ [optional]:
-    - ___ fetch `Puppetfile` from repo @ ref
-    - ___ modify `Puppetfile`
-  - [ ] deps checkout
-  - [ ] ensure ISO is in `ISO/`
-  - build:auto
-    - default settings: `SIMP_BUILD_docs=no SIMP_ENV_NO_SELINUX_DEPS=no BEAKER_destroy=yes`
+  - [x] fetch `simp-core` repo @ ref
+  - [.][optional]:
+    - [x] fetch `Puppetfile` from repo @ ref
+    - [ ] modify `Puppetfile`
+  - [x] deps checkout
+  - [x] ensure ISO is in `ISO/`
+    - [ ] error checking
+  - [x] build:auto
+    - [x] default settings: `SIMP_BUILD_docs=no SIMP_ENV_NO_SELINUX_DEPS=no BEAKER_destroy=yes`
+
 - build vagrant
   - [ ] checkout simp-packer repo @ ref
 
-- BOXES NEEDED:
-  - [ ] empty box (no need to rebuild)
-  - [ ] Puppet master
-    - [ ] BEFORE simp-config
-    - [ ] AFTER simp-config
-  - [ ] Puppet agent
+  - BOXES NEEDED:
+    - [ ] empty box (no need to rebuild)
+    - [ ] Puppet master
+      - [ ] BEFORE simp-config
+      - [ ] AFTER simp-config
+    - [ ] Puppet agent
 
 

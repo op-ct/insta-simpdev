@@ -9,7 +9,7 @@ if [ -n "${SIMP_BUILDER_puppetfile_repo}" ]; then
   pushd "${tmp_dir}" &> /dev/null
 
   repo_url="${SIMP_BUILDER_puppetfile_repo}"
-  repo_ref="${SIMP_BUILDER_core_ref:-master}"
+  repo_ref="${SIMP_BUILDER_puppetfile_ref:-master}"
   echo "  [${me}]: -- cloning repo with new Puppetfile.*: ${repo_url} -b ${repo_ref}"
   git clone --depth 1 "${repo_url}" -b "${repo_ref}" "${tmp_dir}"
 
