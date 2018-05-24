@@ -97,7 +97,7 @@ scp -F .vagrant-ssh-config
 
 # To retrieve the *.iso and *.tar.gz files:
 scp -F .vagrant-ssh-config \
-  simp_builder:/vagrant/simp-core/build/distributions/*/*/*/{SIMP_ISO/*.iso,DVD_Overlay/*.tar.gz} ./
+  simp_builder:/vagrant/simp-core/build/distributions/*/*/*/{SIMP_ISO/*.{iso,json},DVD_Overlay/*.tar.gz} ./
 ```
 
 
