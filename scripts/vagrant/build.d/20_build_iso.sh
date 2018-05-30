@@ -46,6 +46,11 @@ for f in Puppetfile.*; do
   [ -f "${f}" ] && cp "${f}" simp-core/ && echo "  [${me}]: -- copy in new '${f}' file"
 done
 
+# FIXME: Unscrew https://github.com/simp/simp-core/pull/522
+if [ -f simp-core/spec/acceptance/suites/rpm_docker/metadata.yml ]; then
+  rm -f simp-core/spec/acceptance/suites/rpm_docker/metadata.yml
+fi
+
 source /home/vagrant/.rvm/scripts/rvm
 
 # http://simp.readthedocs.io/en/master/getting_started_guide/ISO_Build/Building_SIMP_From_Source.html
