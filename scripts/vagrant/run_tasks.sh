@@ -76,7 +76,8 @@ run_script()
 
   [[ "${script_dir}" =~ ^root ]] && sudo="sudo -E " || sudo=
   if [[ "${dry_run_mode}" == 'yes' ]]; then
-    echo "==  SIMP_BUILDER: [dry-run] would have executed ${sudo}${script_parent_dir}/${script_dir}/$(basename ${1})"
+    echo "==  SIMP_BUILDER: [dry-run] would have executed " \
+      "${sudo}${script_parent_dir}/${script_dir}/$(basename ${1})"
     continue
   fi
   printf "\n==  SIMP_BUILDER: executing '$1':\n\n"
@@ -102,7 +103,7 @@ run_stage()
 
   [[ "${DEBUG}" -gt 0 ]] && echo "    |--  run_stage(): stage: ${stage}, users ("${#users[@]}"): ${users[@]}"
 
-  for user in ${users[@]}; do
+  for user in "${users[@]}"; do
     skip_if_env_var_is_no "SIMP_BUILDER__stage_${stage}__user_${user}" stage
     skip_if_env_var_is_no "SIMP_BUILDER__user_${user}" user
 
