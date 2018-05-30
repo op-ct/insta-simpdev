@@ -2,13 +2,22 @@
 #
 # Download latest CentOS ISO (quick & dirty version)
 #
-# requires:
-#  - aria2 (for speedy downloads)
-#  - elinks (v2+ (epel), for grabbing iso mirror URLs
+# Requires:
 #
-# This will need to be more robust for legacy CentOS images that have been
-# retired to http://vault.centos.org, particularly since the vault mirrors
-# don't always host them
+#  * aria2 (for speedy downloads)
+#  * elinks v2+ (epel), for grabbing iso mirror URLs
+#
+# WARNING: The URLs this script uses are fragile and will probably break a lot.
+#
+#          It would need to be more robust to handle legacy CentOS images that
+#          have been retired to http://vault.centos.org (particularly since the
+#          vault mirrors don't always host them).
+#
+# As an alternative to script, important CI systems should:
+#
+#  * Ensure ISOs are delivered to the 'downloads/isos' directory
+#  * Set the environment variable `SIMP_BUILDER_download_iso=no`
+#
 
 if [ "${SIMP_BUILDER_task}" == setup ]; then
   TARGETS=(centos7 centos6)

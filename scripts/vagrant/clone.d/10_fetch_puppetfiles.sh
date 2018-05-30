@@ -1,7 +1,13 @@
 #!/bin/bash
 #
-# Acquire new Puppetfile.* files before the iso build
-me=$(basename $0)
+# Fetch new Puppetfile.* files before the iso build
+#
+# CI jobs can fetch alternative Puppetfile.* files by setting the environment
+# variables:
+#
+#   SIMP_BUILDER_puppetfile_repo
+#   SIMP_BUILDER_puppetfile_ref (optional, defaults to `master`)
+#
 
 # fetch Puppetfile.* repo @ ref
 if [ -n "${SIMP_BUILDER_puppetfile_repo}" ]; then
@@ -10,6 +16,8 @@ if [ -n "${SIMP_BUILDER_puppetfile_repo}" ]; then
 
   repo_url="${SIMP_BUILDER_puppetfile_repo}"
   repo_ref="${SIMP_BUILDER_puppetfile_ref:-master}"
+  me=$(basename $0)
+
   echo "  [${me}]: -- cloning repo with new Puppetfile.*: ${repo_url} -b ${repo_ref}"
   git clone --depth 1 "${repo_url}" -b "${repo_ref}" "${tmp_dir}"
 
