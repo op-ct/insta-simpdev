@@ -9,7 +9,7 @@
 #   SIMP_BUILDER_puppetfile_ref (optional, defaults to `master`)
 #
 
-me=$(basename $0)
+me="$(basename "$0")"
 
 # fetch Puppetfile.* repo @ ref
 if [ -n "${SIMP_BUILDER_puppetfile_repo}" ]; then
@@ -28,5 +28,5 @@ if [ -n "${SIMP_BUILDER_puppetfile_repo}" ]; then
 else
   echo "  [${me}]: -- SIMP_BUILDER_puppetfile_repo is not set"
   echo "  [${me}]: -- SIMP_BUILDER_puppetfile_ref is not set"
-  echo "  [${me}]: -- "'will not attempt to check out alternate `Puppetfile.*` files'
+  echo "  [${me}]: -- will not attempt to check out alternate \`Puppetfile.\*\` files"
 fi
