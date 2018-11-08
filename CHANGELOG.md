@@ -6,9 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+- rake task `vm:nobuild` to provision VMs without building/downloading ISOs
+
 ### Changed
-- Change OS ISO directory from `download/isos/` to `isos/`
-- Update RVM to from 2.1.9 to 2.4.4
+- Change OS ISO staging directory from `download/isos/` to `isos/`
+- Update RVM Ruby to 2.4.4
 
 
 ## [1.0.0-pre2] - 2018-07-26
