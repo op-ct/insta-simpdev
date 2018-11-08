@@ -1,0 +1,11 @@
+continue
+dir=PWD
+file-allocation=none
+input-file=PWD/.aria2/input.conf
+log-level=warn
+max-connection-per-server=4
+min-split-size=5M
+on-download-complete=exit
+server-stat-of=PWD/.aria2/server-stat-of
+server-stat-if=PWD/.aria2/server-stat-of
+uri-selector=feedback

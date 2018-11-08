@@ -16,7 +16,7 @@ if [[ $? -eq 0 ]]; then
     declare -a -g ISO_FILES
     echo "Found ISO file: '${file}'"
     ISO_FILES+=( "${file}" )
-  done < <( find "${SIMP_BUILDER_iso_dir:-/vagrant/downloads/isos}" -type f \
+  done < <( find "${SIMP_BUILDER_iso_dir:-/vagrant/isos}" -type f \
             -iname \*.iso -print0 )
 else
   for i in "${@}"; do

@@ -169,7 +169,7 @@ This is useful to influence the `SIMP_BUILDER_` and rake tasks within the VM.
 
 | Variable                | Purpose                                            |
 | ----------------------- | -------------------------------------------------- |
-| **`SIMP_BUILDER_download_iso`** | Unless set to `no`, the VM will attempt to download simp ISOs to `downloads/isos/` after provisioning (default: `yes`).
+| **`SIMP_BUILDER_download_iso`** | Unless set to `no`, the VM will attempt to download simp ISOs to `isos/` after provisioning (default: `yes`).
 | **`CENTOS_7_ISO_URL`** | (default: `http://isoredirect.centos.org/centos/7/isos/x86_64/`) |
 | **`CENTOS_7_DVD`** | (default: `CentOS-7-x86_64-DVD-1708.iso`) |
 | **`CENTOS_6_ISO_URL`** | (default: `http://isoredirect.centos.org/centos/6/isos/x86_64/`) |
@@ -181,7 +181,7 @@ This is useful to influence the `SIMP_BUILDER_` and rake tasks within the VM.
 
 | Variable                        | Purpose                                    |
 | --------------------------------| ------------------------------------------ |
-| **`SIMP_BUILDER_iso_dir`**      | Directory containing OS `*.iso` files (default: `/vagrant/downloads/isos`)
+| **`SIMP_BUILDER_iso_dir`**      | Directory containing OS `*.iso` files (default: `/vagrant/isos`)
 | **`SIMP_BUILDER_core_repo`** | simp-core repo to fetch (default: https://github.com/simp/simp-core.git)
 | **`SIMP_BUILDER_core_ref`** | simp-core ref to fetch (default: `master`)
 | **`SIMP_BUILDER_puppetfile_repo`** | Puppetfile repo to fetch (default: https://github.com/simp/simp-core.git)
@@ -195,8 +195,8 @@ effective during provisioning and when the scripts are run within the guest OS:
 
 | Variable | Purpose |
 | -------- | ------- |
-| **`SIMP_BUILDER_download_iso`** | Unless set to `no`, the VM will attempt to download simp ISOs to `downloads/isos/` after provisioning (default: `yes`).
-| **`SIMP_BUILDER_build_iso`**    | Unless set to `no`, the VM will attempt to build the SIMP ISO using the isos in the directory `downloads/isos/` (default: `yes`)
+| **`SIMP_BUILDER_download_iso`** | Unless set to `no`, the VM will attempt to download simp ISOs to `isos/` after provisioning (default: `yes`).
+| **`SIMP_BUILDER_build_iso`**    | Unless set to `no`, the VM will attempt to build the SIMP ISO using the isos in the directory `isos/` (default: `yes`)
 
 
 ### "Kill switch" variables
