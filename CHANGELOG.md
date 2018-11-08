@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - Change OS ISO directory from `download/isos/` to `isos/`
+- Update RVM to from 2.1.9 to 2.4.4
 
 
 ## [1.0.0-pre2] - 2018-07-26

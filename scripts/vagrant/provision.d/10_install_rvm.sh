@@ -17,7 +17,7 @@ gpg2 --verbose  --keyserver hkp://keys.gnupg.net --recv-keys \
 [ -f install_rvm.sh ] || curl -sSL https://get.rvm.io > install_rvm.sh
 bash install_rvm.sh stable '--with-default-gems=gitlab rake'
 source "${HOME:-/home/vagrant}/.rvm/scripts/rvm"
-rvm install --disable-binary ruby-2.1.9
+rvm install --disable-binary ruby-2.4.4
 gem install bundler --no-document
 
 # If there is a Gemfile already under /vagrant, we should bundle it immediately.
