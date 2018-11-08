@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.0-pre3] - 2018-11-08
 
 ### Added
 - rake task `vm:nobuild` to provision VMs without building/downloading ISOs
@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - Change OS ISO staging directory from `download/isos/` to `isos/`
 - Update RVM Ruby to 2.4.4
+
+### Removed
+- Unused rake tasks
 
 
 ## [1.0.0-pre2] - 2018-07-26
