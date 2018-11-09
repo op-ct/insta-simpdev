@@ -7,7 +7,8 @@ namespace :vm do
       * `vagrant ssh` into the VM before building
   DESC
   task :nobuild do
-    sh 'SIMP_BUILDER__task_build=no SIMP_BUILDER__setup_build=no vagrant up'
+    sh 'SIMP_BUILDER__task_setup=no SIMP_BUILDER__task_clone=no SIMP_BUILDER__task_build=no vagrant up'
+    sh 'vagrant snapshot save freshvm'
   end
 end
 
